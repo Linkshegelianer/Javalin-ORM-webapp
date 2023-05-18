@@ -2,6 +2,8 @@
 
 This repository contains a ~~~. This is an educational project aimed at the practice of working with Java Collections, Gradle, JUnit, Github Actions.
 
+**See how it works [here]().**
+
 ### Hexlet tests and linter status:
 | Type | Status                                                                                                                                                                            |  
 | ---- |-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|  
