@@ -41,7 +41,7 @@ public final class App {
             config.enableDevLogging();
 
             config.enableWebjars();
-            JavalinThymeleaf.configure(getTemplateEngine());
+            JavalinThymeleaf.configure(getTemplateEngine()); // step 4 from 3rd part
         });
 
         addRoutes(app);
