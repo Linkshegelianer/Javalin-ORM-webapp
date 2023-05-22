@@ -42,7 +42,23 @@ public final class UrlController {
         ctx.render("urls/index.html");
     };
 
-    // POST /urls
+    // GET /urls/{id}
+    public static Handler showUrl = ctx -> {
+        int id = ctx.pathParamAsClass("id", Integer.class).getOrDefault(null);
+
+        Url url = new QUrl()
+                .id.equalTo(id)
+                .findOne();
+
+        if (url == null) {
+            throw new NotFoundResponse();
+        }
+
+        ctx.attribute("url", url);
+        ctx.render("urls/show.html");
+    };
+
+    // POST /urls add website
     public static Handler createUrl = ctx -> {
         String urlFull = ctx.formParam("url");
 
@@ -75,23 +91,7 @@ public final class UrlController {
         ctx.redirect("/urls");
     };
 
-    // GET /urls/{id}
-    public static Handler showUrl = ctx -> {
-        int id = ctx.pathParamAsClass("id", Integer.class).getOrDefault(null);
-
-        Url url = new QUrl()
-                .id.equalTo(id)
-                .findOne();
-
-        if (url == null) {
-            throw new NotFoundResponse();
-        }
-
-        ctx.attribute("url", url);
-        ctx.render("urls/show.html");
-    };
-
-//    // POST /urls/{id}/checks
+//    // POST /urls/{id}/checks check for SEO optimization
 //    public static Handler checkUrl = ctx -> {
 //
 //    }
