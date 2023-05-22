@@ -48,7 +48,7 @@ dependencies {
     testImplementation 'io.ebean:ebean-test:12.15.1'
     testImplementation 'org.junit.jupiter:junit-jupiter-params:5.8.2'
 //    testImplementation 'org.assertj:assertj-core:3.22.0'
-//    testImplementation 'com.konghq:unirest-java:3.13.6'
+    testImplementation 'com.konghq:unirest-java:3.13.6' // step 3 from 7th part
 }
 
 test {
