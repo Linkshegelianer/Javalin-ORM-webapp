@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/application.html}">
+
+<section layout:fragment="header">
+    <h1 th:text="'Сайт: ' + ${url.getName()}"></h1>
+</section>
+
+<section layout:fragment="content" th:object="${article}">
+    <div class="container-lg mt-5">
+        <table class="table table-bordered table-hover mt-3">
+            <tbody>
+                <tr>
+                    <td>ID</td>
+                    <td th:text="*{getId()}"></td>
+                </tr>
+                <tr>
+                    <td>Имя</td>
+                    <td th:text="*{getName()}"></td>
+                </tr>
+                <tr>
+                    <td>Дата создания</td>
+                    <td th:text="*{getCreatedAt()}"></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2 class="mt-5">Проверки</h2>
+        <form method="post" action="/urls/1/checks">
+            <button class="btn btn-primary" type="submit">Запустить проверку</button>
+        </form>
+
+        <table class="table table-bordered table-hover mt-3">
+            <thead>
+            <tr>
+                <th class="col-1">ID</th>
+                <th class="col-2">Код ответа</th>
+                <th>title</th>
+                <th>h1</th>
+                <th>description</th>
+                <th class="col-2">Дата проверки</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr th:each="url : ${urls}" th:object="${url}">
+                <td th:text="*{getId()}"></td>
+                <td>
+                    <a th:href="@{/urls/{id}(id=*{getId()})}" th:text="${#strings.abbreviate(url.getName(), 30)}"></a>
+                </td>
+
+
+                <td th:text="${#strings.abbreviate(article.getDescription(), 60)}"></td>
+                !!!
+
+
+
+                <td th:text="${#temporals.format(url.getCreatedAt(), 'dd/MM/yyyy HH:mm')}"></td>
+            </tr>
+            </tbody>
+        </table>
+        </div>
+</section>
+</html>

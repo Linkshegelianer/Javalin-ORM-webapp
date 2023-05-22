@@ -1,6 +1,6 @@
 package hexlet.code.domain;
 
-
+import io.ebean.Model;
 import io.ebean.annotation.WhenCreated;
 
 import javax.persistence.Entity;
@@ -8,7 +8,7 @@ import javax.persistence.Id;
 import java.time.Instant;
 
 @Entity
-public class Url {
+public final class Url extends Model {
 
     @Id
     private long id;
@@ -18,6 +18,9 @@ public class Url {
     @WhenCreated
     private Instant createdAt;
 
+    public Url() {
+
+    }
     public Url(String name) { // use only non-automatically generated fields
         this.name = name;
     }
