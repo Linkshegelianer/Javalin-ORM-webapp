@@ -63,8 +63,8 @@ class AppTest {
             String body = response.getBody();
 
             assertThat(response.getStatus()).isEqualTo(200);
-            assertThat(body).contains("The Man Within");
-            assertThat(body).contains("Consider the Lilies");
+            assertThat(body).contains("https://some-domain.org");
+            assertThat(body).contains("https://some-domain.org:8080");
         }
     }
 

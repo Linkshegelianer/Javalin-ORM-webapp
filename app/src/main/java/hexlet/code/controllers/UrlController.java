@@ -1,13 +1,18 @@
 package hexlet.code.controllers;
 
 import hexlet.code.domain.Url;
+import hexlet.code.domain.UrlCheck;
 import hexlet.code.domain.query.QUrl;
 import io.ebean.PagedList;
 import io.javalin.http.Handler;
 import io.javalin.http.NotFoundResponse;
+import kong.unirest.HttpResponse;
+import kong.unirest.Unirest;
+import kong.unirest.UnirestException;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 
 import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -91,8 +96,33 @@ public final class UrlController {
         ctx.redirect("/urls");
     };
 
-//    // POST /urls/{id}/checks check for SEO optimization
-//    public static Handler checkUrl = ctx -> {
-//
-//    }
+    // POST /urls/{id}/checks & /urls/{id} check for SEO optimization
+    public static Handler checkUrl = ctx -> {
+        int id = ctx.pathParamAsClass("id", Integer.class).getOrDefault(null);
+
+        Url url = new QUrl()
+                .id.equalTo(id)
+                .findOne();
+        try {
+            HttpResponse<String> response = Unirest.get(url.getName()).asString(); // return view of the source
+
+            Document document = Jsoup.parse(response.getBody());
+            int statusCode = response.getStatus();
+            String title = document.title();
+            String h1 = document.selectFirst("h1").toString(); // return new String object
+            String description = document.selectFirst("meta[name='description']").toString();
+
+            UrlCheck urlCheck = new UrlCheck(url, statusCode, title, h1, description);
+            urlCheck.save();
+
+            ctx.sessionAttribute("flash", "Страница успешно проверена");
+            ctx.sessionAttribute("flash-type", "success");
+        } catch (UnirestException e) {
+            ctx.sessionAttribute("flash", "Некорректный адрес");
+            ctx.sessionAttribute("flash-type", "danger");
+        }
+        ctx.redirect("/urls/" + id);
+    }
+
+    
 }
