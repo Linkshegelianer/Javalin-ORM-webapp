@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import java.time.Instant;
+import java.util.Comparator;
 import java.util.List;
 
 @Entity
@@ -46,4 +47,9 @@ public final class Url extends Model {
         return urlChecks;
     }
 
+    public UrlCheck getCheck() {
+        return this.urlChecks.stream()
+                .max(Comparator.comparing(UrlCheck::getCreatedAt))
+                .orElse(null);
+    }
 }

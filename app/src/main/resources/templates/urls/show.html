@@ -43,20 +43,13 @@
             </thead>
 
             <tbody>
-            <tr th:each="url : ${urls}" th:object="${url}">
-
+            <tr th:each="check : ${url.getUrlChecks()}" th:object="${check}">
                 <td th:text="*{getId()}"></td>
-                <td>
-                    <a th:href="@{/urls/{id}(id=*{getId()})}" th:text="${#strings.abbreviate(url.getName(), 30)}"></a>
-                </td>
-
-
-                <td th:text="${#strings.abbreviate(article.getDescription(), 60)}"></td>
-                !!!
-
-
-
-                <td th:text="${#temporals.format(url.getCreatedAt(), 'dd/MM/yyyy HH:mm')}"></td>
+                <td th:text="*{getStatusCode()}"></td>
+                <td th:text="*{getTitle()}"></td>
+                <td th:text="*{getH1()}"></td>
+                <td th:text="*{getDescription()}"></td>
+                <td th:text="*{getCreatedAt()}"></td>
             </tr>
             </tbody>
         </table>

@@ -5,11 +5,9 @@ import hexlet.code.domain.Url;
 import io.ebean.DB;
 import io.ebean.Database;
 import io.javalin.Javalin;
-import org.junit.jupiter.api.*;
-
-
 import kong.unirest.HttpResponse;
-
+import kong.unirest.Unirest;
+import org.junit.jupiter.api.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -53,8 +51,7 @@ class AppTest {
     }
 
     @Nested
-    class UrlTest() {
-
+    class UrlTest {
         @Test
         void testIndex() {
             HttpResponse<String> response = Unirest
@@ -65,6 +62,17 @@ class AppTest {
             assertThat(response.getStatus()).isEqualTo(200);
             assertThat(body).contains("https://some-domain.org");
             assertThat(body).contains("https://some-domain.org:8080");
+        }
+
+        @Test
+        void testShow() {
+            HttpResponse<String> response = Unirest
+                    .get(baseUrl + "/urls")
+                    .asString();
+            String body = response.getBody();
+            assertThat(response.getStatus()).isEqualTo(200);
+            assertThat(body).contains("Проверки");
+            assertThat(body).contains("Запустить проверку");
         }
     }
 
