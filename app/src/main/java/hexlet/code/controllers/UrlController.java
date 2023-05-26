@@ -11,6 +11,7 @@ import kong.unirest.Unirest;
 import kong.unirest.UnirestException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -97,7 +98,7 @@ public final class UrlController {
         ctx.redirect("/urls");
     };
 
-    // POST /urls/{id}/checks & /urls/{id} check for SEO optimization
+    // POST /urls/{id}/checks check for SEO optimization
     public static Handler checkUrl = ctx -> {
         int id = ctx.pathParamAsClass("id", Integer.class).getOrDefault(null);
 
@@ -110,12 +111,10 @@ public final class UrlController {
             Document document = Jsoup.parse(response.getBody());
             int statusCode = response.getStatus();
             String title = document.title();
-            String h1 = document.selectFirst("h1").toString(); // return new String object
-            String description = document.selectFirst("meta[name='description']").toString();
-
+            String h1 = getH1(document);
+            String description = getDescription(document);
             UrlCheck urlCheck = new UrlCheck(url, statusCode, title, h1, description);
             urlCheck.save();
-
             ctx.sessionAttribute("flash", "Страница успешно проверена");
             ctx.sessionAttribute("flash-type", "success");
         } catch (UnirestException e) {
@@ -124,4 +123,16 @@ public final class UrlController {
         }
         ctx.redirect("/urls/" + id);
     };
+
+    private static String getH1(Element element) {
+        Element h1 = element.selectFirst("h1");
+        String h1String = h1.text();
+        return h1String.isEmpty() ? null : h1String;
+    }
+
+    private static String getDescription(Element element) {
+        Element description = element.selectFirst("meta[name='description']");
+        String descriptionString = description.text();
+        return descriptionString.isEmpty() ? null : descriptionString;
+    }
 }

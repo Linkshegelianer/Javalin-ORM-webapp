@@ -1,15 +1,15 @@
 package hexlet.code;
 
-
+import hexlet.code.controllers.RootController;
+import hexlet.code.controllers.UrlController;
 import io.javalin.Javalin;
 import io.javalin.plugin.rendering.template.JavalinThymeleaf;
-
-import org.thymeleaf.TemplateEngine;
-import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 import nz.net.ultraq.thymeleaf.layoutdialect.LayoutDialect;
+import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.extras.java8time.dialect.Java8TimeDialect;
+import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 
-import hexlet.code.controllers.RootController;
+import static io.javalin.apibuilder.ApiBuilder.*;
 
 public final class App {
 
@@ -32,14 +32,36 @@ public final class App {
         return templateEngine;
     }
 
+    private static String getMode() {
+        return System.getenv().getOrDefault("APP_ENV", "development");
+    }
+
+    private static boolean isProduction() {
+        return getMode().equals("production");
+    }
+
     private static void addRoutes(Javalin app) {
         app.get("/", RootController.welcome);
+
+        app.routes(() -> {
+            path("urls", () -> {
+                get(UrlController.showAllUrls);
+                post(UrlController.createUrl);
+                path("{id}", () -> {
+                    get(UrlController.showUrl);
+                    path("checks", () -> {
+                        post(UrlController.checkUrl);
+                    });
+                });
+            });
+        });
     }
 
     public static Javalin getApp() {
         Javalin app = Javalin.create(config -> {
-            config.enableDevLogging();
-
+            if (!isProduction()) {
+                config.enableDevLogging();
+            }
             config.enableWebjars();
             JavalinThymeleaf.configure(getTemplateEngine()); // step 4 from 3rd part
         });

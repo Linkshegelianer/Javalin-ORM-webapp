@@ -12,7 +12,7 @@ import java.time.Instant;
 @Entity
 public final class UrlCheck extends Model {
 
-    @ManyToOne
+    @ManyToOne(optional = false)
     private Url url;
 
     @Id
@@ -20,10 +20,9 @@ public final class UrlCheck extends Model {
 
     private int statusCode;
 
-    @Lob
     private String title;
 
-    @Lob
+
     private String h1;
 
     @Lob
@@ -67,4 +66,6 @@ public final class UrlCheck extends Model {
     public Instant getCreatedAt() {
         return createdAt;
     }
+
+    // format createdAt
 }

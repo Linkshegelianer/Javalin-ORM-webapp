@@ -52,4 +52,7 @@ public final class Url extends Model {
                 .max(Comparator.comparing(UrlCheck::getCreatedAt))
                 .orElse(null);
     }
+
+    // format createdAt
+
 }
