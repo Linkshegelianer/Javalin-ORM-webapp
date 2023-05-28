@@ -1,13 +1,18 @@
 package hexlet.code;
 
-
 import hexlet.code.domain.Url;
+import hexlet.code.domain.query.QUrl;
 import io.ebean.DB;
 import io.ebean.Database;
 import io.javalin.Javalin;
 import kong.unirest.HttpResponse;
 import kong.unirest.Unirest;
-import org.junit.jupiter.api.*;
+import okhttp3.mockwebserver.MockWebServer;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Nested;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -23,6 +28,10 @@ class AppTest {
     private static Url existingUrl;
     private static Database database;
 
+    public static MockWebServer mockWebServer;
+
+    private static final String MOCK_INDEX_HTML = "mock-index.html";
+
     @BeforeAll
     public static void beforeAll() {
         app = App.getApp();
@@ -30,6 +39,15 @@ class AppTest {
         int port = app.port();
         baseUrl = "http://localhost:" + port;
         database = DB.getDefault();
+
+//        mockWebServer = new MockWebServer();
+//        try {
+//            MockResponse mockResponse = new MockResponse()
+//                    .setBody(Files.readString(MOCK_INDEX_HTML), StandardCharsets.UTF_8)
+//        } catch (IOException e) {
+//            System.out.println("Could not read file!");
+//        }
+
     }
 
     @AfterAll
@@ -74,6 +92,44 @@ class AppTest {
             assertThat(body).contains("Проверки");
             assertThat(body).contains("Запустить проверку");
         }
-    }
 
+//        @Test
+//        void testCheckUrl() {
+//            Url urlTest = new Url();
+//            urlTest.setName("https://test.org");
+//            int statusCode = 200;
+//            String title = "Test";
+//
+//
+//
+//        }
+
+        @Test
+        void testCreate() {
+            String inputName = "https://test.org";
+            HttpResponse<String> responseUrl = Unirest
+                    .post(baseUrl + "/urls")
+                    .field("name", inputName)
+                    .asEmpty();
+
+            assertThat(responseUrl.getStatus()).isEqualTo(302);
+            assertThat(responseUrl.getHeaders().getFirst("Location")).isEqualTo("/urls");
+
+            HttpResponse<String> response = Unirest
+                    .get(baseUrl + "/urls")
+                    .asString();
+            String body = response.getBody();
+
+            assertThat(response.getStatus()).isEqualTo(200);
+            assertThat(body).contains(inputName);
+            assertThat(body).contains("Статья успешно создана");
+
+            Url actualUrl = new QUrl()
+                    .name.equalTo(inputName)
+                    .findOne();
+
+            assertThat(actualUrl).isNotNull();
+            assertThat(actualUrl.getName()).isEqualTo(inputName);
+        }
+    }
 }
