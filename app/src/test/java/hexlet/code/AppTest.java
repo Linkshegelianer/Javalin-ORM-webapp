@@ -3,13 +3,18 @@ package hexlet.code;
 import hexlet.code.domain.Url;
 import hexlet.code.domain.UrlCheck;
 import hexlet.code.domain.query.QUrl;
+import hexlet.code.domain.query.QUrlCheck;
 import io.ebean.DB;
 import io.ebean.Database;
 import io.javalin.Javalin;
 import kong.unirest.HttpResponse;
 import kong.unirest.Unirest;
 import okhttp3.mockwebserver.MockWebServer;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Nested;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -35,9 +40,9 @@ class AppTest {
 
     public static final String INVALID_URL = "invalid_url";
 
-    public static String INPUT_URL = "https://input.org";
+    public static final String INPUT_URL = "https://input.org";
 
-    public static String TEST_HTML_PATH = "src/test/resources";
+    public static final String TEST_HTML_PATH = "src/test/resources";
 
     public static final int ADDED_URLS_COUNT = 2;
 
@@ -167,6 +172,7 @@ class AppTest {
 
         @Test
         void createUrlCheck() throws IOException {
+            int newUrlId = ADDED_URLS_COUNT + 1;
             String testHtml = Files.readString(Paths.get(TEST_HTML_PATH, "test.html"));
             String mockUrl = mockWebServer.url("/").toString();
 
@@ -176,18 +182,18 @@ class AppTest {
                     .asString();
 
             HttpResponse<String> responsePostCheck = Unirest
-                    .post(baseUrl + "/urls/%d/checks".formatted(3)) // nextUrlId
+                    .post(baseUrl + "/urls/%d/checks".formatted(newUrlId)) // nextUrlId
                     .asString();
 
             assertThat(responsePostCheck.getStatus()).isEqualTo(302);
             assertThat(responsePostCheck.getHeaders().getFirst("Location")).isEqualTo("/urls/%d".formatted(3));
 
             HttpResponse<String> responseGetAfterRedirect = Unirest
-                    .get(baseUrl + "/urls/%d".formatted(3))
+                    .get(baseUrl + "/urls/%d".formatted(newUrlId))
                     .asString();
 
             assertThat(responseGetAfterRedirect.getStatus()).isEqualTo(200);
-            assertThat(responseGetAfterRedirect.getBody()).contains(String.valueOf(3));
+            assertThat(responseGetAfterRedirect.getBody()).contains(String.valueOf(newUrlId));
             assertThat(responseGetAfterRedirect.getBody()).contains("201");
             assertThat(responseGetAfterRedirect.getBody()).contains("Test title");
             assertThat(responseGetAfterRedirect.getBody()).contains("Test description");
