@@ -154,7 +154,7 @@ class AppTest {
                     .asString();
             String body = response.getBody();
             assertThat(response.getStatus()).isEqualTo(200);
-            assertThat(body).contains(ADDED_URL_FIRST);
+            assertThat(body).contains(ADDED_URL_SECOND);
             assertThat(body).contains("Запустить проверку");
         }
 

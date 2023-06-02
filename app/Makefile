@@ -1,23 +1,23 @@
 setup:
 	gradle wrapper --gradle-version 7.4
 
-run:
-	APP_ENV=development ./build/install/app/bin/app
-
-start:
-	APP_ENV=development ./gradlew run
-
-start-prod:
-	APP_ENV=production ./gradlew run
-
 clean:
 	./gradlew clean
 
 build:
 	./gradlew clean build
 
+start:
+	APP_ENV=development ./gradlew run
+
+run:
+	APP_ENV=development ./build/install/app/bin/app
+
 install:
 	./gradlew install
+
+start-dist:
+	APP_ENV=production ./build/install/app/bin/app
 
 generate-migrations:
 	./gradlew generateMigrations
