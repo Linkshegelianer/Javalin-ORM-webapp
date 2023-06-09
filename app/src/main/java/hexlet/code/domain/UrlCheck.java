@@ -58,10 +58,11 @@ public final class UrlCheck extends Model {
         return description;
     }
 
-    public Instant getCreatedAt() { return createdAt; }
+    public Instant getCreatedAt() {
+        return createdAt;
+    }
 
     public Url getUrl() {
         return url;
     }
-
 }
