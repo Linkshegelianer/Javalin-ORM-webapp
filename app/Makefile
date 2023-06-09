@@ -1,3 +1,5 @@
+run-dist: build test lint
+
 setup:
 	gradle wrapper --gradle-version 7.4
 
