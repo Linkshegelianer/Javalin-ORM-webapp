@@ -1,6 +1,6 @@
 # Page analyzer
 
-This repository contains a small web-application for checking other websites' SEO optimization. 
+This repository contains a small web-application for checking other websites' search engine optimization. 
 This is an educational project aimed at the practice of working with Javalin, ORM Ebean, Bootstrap, Thymeleaf, JUnit and GitHub Actions.
 
 The application checks whether the website is accessible (response code is 200) and has title, description and h1 tag. 
