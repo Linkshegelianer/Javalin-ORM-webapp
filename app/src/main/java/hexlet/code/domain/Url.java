@@ -13,9 +13,6 @@ import java.util.List;
 @Entity
 public final class Url extends Model {
 
-    @OneToMany(mappedBy = "url")
-    private List<UrlCheck> urlChecks;
-
     @Id
     private long id;
 
@@ -24,10 +21,10 @@ public final class Url extends Model {
     @WhenCreated
     private Instant createdAt;
 
-    public Url() {
+    @OneToMany(mappedBy = "url")
+    private List<UrlCheck> urlChecks;
 
-    }
-    public Url(String name) { // use only non-automatically generated fields
+    public Url(String name) {
         this.name = name;
     }
 
@@ -39,24 +36,15 @@ public final class Url extends Model {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Instant getCreatedAt() {
-        return createdAt;
-    }
+    public Instant getCreatedAt() { return createdAt; }
 
     public List<UrlCheck> getUrlChecks() {
         return urlChecks;
     }
 
-    public UrlCheck getCheck() {
+    public UrlCheck getLastCheck() {
         return this.urlChecks.stream()
-                .max(Comparator.comparing(UrlCheck::getCreatedAt))
-                .orElse(null);
+            .max(Comparator.comparing(UrlCheck::getCreatedAt))
+            .orElse(null);
     }
-
-    // format createdAt
-
 }

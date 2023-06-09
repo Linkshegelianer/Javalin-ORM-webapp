@@ -1,10 +1,12 @@
 <!DOCTYPE html>
-<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layouts/application.html}">
+<html lang="ru" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/application.html}"
+      xmlns:th="http://www.thymeleaf.org">
 
 <section layout:fragment="content">
     <div class="container-lg mt-5">
         <h1>Сайты</h1>
+
         <table class="table table-bordered table-hover mt-3">
             <thead>
             <tr>
@@ -14,30 +16,30 @@
                 <th class="col-1">Код ответа</th>
             </tr>
             </thead>
-
             <tbody>
             <tr th:each="url : ${urls}" th:object="${url}">
                 <td th:text="*{getId()}"></td>
                 <td><a th:text="*{getName()}" th:href="@{|/urls/*{getId()}|}"></a></td>
-                <td th:text="*getUrlChecks().size != 0} ? *{getCheck().getCreatedAt()} : ''"></td>
-                <td th:text="*getUrlChecks().size != 0} ? *{getCheck().getStatusCode()} : ''"></td>
+                <td th:text="*{getUrlChecks().size != 0} ? *{getLastCheck().getFormattedCreatedAt()} : ''"></td>
+                <td th:text="*{getUrlChecks().size != 0} ? *{getLastCheck().getStatusCode()} : ''"></td>
             </tr>
             </tbody>
         </table>
 
-        <nav aria-label="Page navigation" th:if="${#lists.size(pages)}">
+        <nav aria-label="Page navigation">
             <ul class="pagination justify-content-center mt-5">
                 <li th:class="'page-item' + ${currentPage <= 1 ? ' disabled' : ''}">
-                    <a class="page-link" th:href="@{/articles(page=${currentPage - 1},term=${term})}">Previous</a>
+                    <a class="page-link" th:href="@{|/urls?page=${currentPage - 1}|}">Previous</a>
                 </li>
-                <li th:each="page : ${pages}" th:class="'page-item' + ${currentPage == page ? ' active' : ''}">
-                    <a class="page-link" th:href="@{/articles(page=${page},term=${term})}" th:text="${page}"></a>
+                <li th:each="page : ${pages}" th:class="'page-item' + ${page == currentPage ? ' active' : ''}">
+                    <a class="page-link" th:href="@{|/urls?page=${page}|}" th:text="${page}"></a>
                 </li>
-                <li th:class="'page-item' + ${currentPage >= #lists.size(pages) ? ' disabled' : ''}">
-                    <a class="page-link" th:href="@{/articles(page=${currentPage + 1},)}">Next</a>
+                <li th:class="'page-item ' + ${currentPage >= #lists.size(pages)  ? ' disabled' : ''}">
+                    <a class="page-link" th:href="@{|/urls?page=${currentPage + 1}|}">Next</a>
                 </li>
             </ul>
         </nav>
-
     </div>
 </section>
+
+</html>

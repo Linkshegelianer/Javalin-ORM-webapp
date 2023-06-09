@@ -6,5 +6,4 @@ COPY /app .
 
 RUN gradle installDist
 
-CMD ./build/install/app/bin/app
-# /java-project-72/app/build/install/app
+CMD ./build/install/java-javalin-blog/bin/java-javalin-blog

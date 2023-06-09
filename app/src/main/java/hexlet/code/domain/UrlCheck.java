@@ -12,16 +12,12 @@ import java.time.Instant;
 @Entity
 public final class UrlCheck extends Model {
 
-    @ManyToOne(optional = false)
-    private Url url;
-
     @Id
     private long id;
 
     private int statusCode;
 
     private String title;
-
 
     private String h1;
 
@@ -31,16 +27,15 @@ public final class UrlCheck extends Model {
     @WhenCreated
     private Instant createdAt;
 
-    public UrlCheck(Url url, int statusCode, String title, String h1, String description) {
-        this.url = url;
+    @ManyToOne(optional = false)
+    private Url url;
+
+    public UrlCheck(int statusCode, String title, String h1, String description, Url url) {
         this.statusCode = statusCode;
         this.title = title;
         this.h1 = h1;
         this.description = description;
-    }
-
-    public Url getUrl() {
-        return url;
+        this.url = url;
     }
 
     public long getId() {
@@ -63,9 +58,10 @@ public final class UrlCheck extends Model {
         return description;
     }
 
-    public Instant getCreatedAt() {
-        return createdAt;
+    public Instant getCreatedAt() { return createdAt; }
+
+    public Url getUrl() {
+        return url;
     }
 
-    // format createdAt
 }

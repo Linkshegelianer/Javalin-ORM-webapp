@@ -13,7 +13,6 @@ import static io.javalin.apibuilder.ApiBuilder.get;
 import static io.javalin.apibuilder.ApiBuilder.path;
 import static io.javalin.apibuilder.ApiBuilder.post;
 
-
 public final class App {
 
     private static int getPort() {
@@ -53,7 +52,7 @@ public final class App {
                 path("{id}", () -> {
                     get(UrlController.showUrl);
                     path("checks", () -> {
-                        post(UrlController.checkUrl);
+                        post(UrlController.createUrlCheck);
                     });
                 });
             });
@@ -82,5 +81,4 @@ public final class App {
         Javalin app = getApp();
         app.start(getPort());
     }
-
 }
