@@ -25,33 +25,32 @@ application {
     mainClass = 'hexlet.code.App'
 }
 
-
-
 dependencies {
-    implementation 'io.javalin:javalin:5.5.0'
-    implementation 'io.javalin:javalin-rendering:5.5.0'
-    implementation 'org.slf4j:slf4j-simple:2.0.5'
+    implementation 'io.javalin:javalin:4.6.7'
+    implementation 'io.javalin:javalin-rendering:5.4.2'
+    implementation 'org.slf4j:slf4j-simple:2.0.6'
 
-    implementation 'com.h2database:h2:2.1.214' // step 2 from 2nd part
+    implementation 'com.h2database:h2:2.1.214'
     implementation 'org.postgresql:postgresql:42.3.8'
 
-    implementation 'org.thymeleaf:thymeleaf:3.0.15.RELEASE' // step 1 from 3rd part
+    implementation 'org.thymeleaf:thymeleaf:3.0.15.RELEASE'
     implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect:3.2.0'
-    implementation 'org.thymeleaf.extras:thymeleaf-extras-java8time:3.0.4.RELEASE'
-    implementation 'org.webjars:bootstrap:5.2.3' // step 5 from 3rd part
+    implementation 'org.thymeleaf.extras:thymeleaf-extras-java8time:3.0.4.RELEASE' //добавляет объект temporal
+    implementation 'org.webjars:bootstrap:5.2.3'
 
-    implementation 'io.ebean:ebean:13.6.2' // step 1 from 2nd part
+    implementation 'io.ebean:ebean:13.6.2'
     implementation 'io.ebean:ebean-querybean:13.6.2'
     implementation 'io.ebean:ebean-annotation:8.3'
     implementation 'io.ebean:ebean-ddl-generator:13.6.2'
-    implementation 'io.ebean:ebean-migration:13.6.2' // step 4 from 2nd part
+    implementation 'io.ebean:ebean-migration:13.6.2'
     annotationProcessor 'io.ebean:querybean-generator:13.6.2'
 
     implementation 'org.glassfish.jaxb:jaxb-runtime:2.3.5'
     implementation 'javax.activation:activation:1.1.1'
 
-    implementation 'com.konghq:unirest-java:3.13.13' // step 3 from 7th part
-    implementation 'org.jsoup:jsoup:1.15.4' // step 3 from 8th part
+    implementation 'com.konghq:unirest-java:3.13.13'
+
+    implementation 'org.jsoup:jsoup:1.15.4'
 
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.2'
     testImplementation 'org.junit.jupiter:junit-jupiter-params:5.9.2'
