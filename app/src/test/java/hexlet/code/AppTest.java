@@ -40,6 +40,12 @@ class AppTest {
     public static final int ADDED_URLS_COUNT = 3;
     private static final int INVALID_URL_ID = 3;
 
+    @Test
+    void testInit() {
+        assertThat(true).isEqualTo(true);
+    }
+
+
     @BeforeAll
     public static void beforeAll() throws IOException {
         app = App.getApp();
