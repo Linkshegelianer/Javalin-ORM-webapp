@@ -11,13 +11,9 @@ import kong.unirest.HttpResponse;
 import kong.unirest.Unirest;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
+import org.junit.jupiter.api.*;
 
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.Nested;
-
+import javax.persistence.PersistenceException;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -55,7 +51,12 @@ class AppTest {
         database = DB.getDefault();
 
         mockWebServer = new MockWebServer();
-        mockWebServer.start();
+        try {
+            mockWebServer.start();
+        } catch (PersistenceException e) {
+            System.out.println("Something with the connection");
+        }
+
     }
 
     @AfterAll
