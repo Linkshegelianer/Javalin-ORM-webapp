@@ -5,6 +5,10 @@ ebean:
     platform: h2
     ddlMode: dropCreate
     dbName: test
+  ddl:
+    run: true
+    generate: true
+    seedSql: seed-test-db.sql
 
 ## If we don't want use ebean.test properties:
 ## (CREATE ALL DDL is only generated and executed when running tests.)
