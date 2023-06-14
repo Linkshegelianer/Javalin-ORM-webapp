@@ -17,6 +17,7 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 
+import javax.persistence.PersistenceException;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -54,15 +55,18 @@ class AppTest {
         database = DB.getDefault();
 
         mockWebServer = new MockWebServer();
-        mockWebServer.start();
+        try {
+            mockWebServer.start();
+        } catch (PersistenceException e) {
+            System.out.println("Something with the connection");
+        }
+
     }
 
     @AfterAll
     public static void afterAll() throws IOException {
-        database.script().run("/truncate.sql");
         app.stop();
         mockWebServer.shutdown();
-
     }
 
     @BeforeEach

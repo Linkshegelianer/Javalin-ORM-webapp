@@ -12,7 +12,7 @@
             <column name="title" type="varchar"/>
             <column name="h1" type="varchar"/>
             <column name="description" type="clob"/>
-            <column name="url_id" type="bigint" references="url.id" foreignKeyName="fk_url_check_url_id" foreignKeyIndex="ix_url_check_url_id"/>
+            <column name="url_id" type="bigint" notnull="true" references="url.id" foreignKeyName="fk_url_check_url_id" foreignKeyIndex="ix_url_check_url_id"/>
             <column name="created_at" type="timestamp" notnull="true"/>
         </createTable>
     </changeSet>

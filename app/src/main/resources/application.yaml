@@ -1,18 +1,18 @@
 datasource:
   default: ${APP_ENV}
   development:
-    username: ""
-    password: ""
-    url: "jdbc:h2:./database"
+    username: sa
+    password: sa
+    url: "jdbc:h2:./app_database"
   production:
-    username: ${PGUSER}
-    password: ${PGPASSWORD}
-    url: jdbc:postgresql://${PGHOST}:${PGPORT}/${PGDATABASE}
-    
+    username: ${JDBC_DATABASE_USERNAME}
+    password: ${JDBC_DATABASE_PASSWORD}
+    url: ${JDBC_DATABASE_URL}
+
 ebean:
-  development:
-    migration:
-      run: true
-  production:
+  ddl:
+    run: true
+    generate: true
+    seedSql: seed-test-db.sql
     migration:
       run: true
