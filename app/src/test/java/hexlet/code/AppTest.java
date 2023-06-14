@@ -53,14 +53,6 @@ class AppTest {
         int port = app.port();
         baseUrl = "http://localhost:" + port;
         database = DB.getDefault();
-
-        mockWebServer = new MockWebServer();
-        try {
-            mockWebServer.start();
-        } catch (PersistenceException e) {
-            System.out.println("Something with the connection");
-        }
-
     }
 
     @AfterAll
@@ -181,6 +173,9 @@ class AppTest {
 
         @Test
         void createUrlCheck() throws IOException { // pass
+            mockWebServer = new MockWebServer();
+            mockWebServer.start();
+
             String pathTestIndex = TEST_HTML_PATH + MOCK_INDEX_HTML;
             String mockHtml = null;
             try {
