@@ -13,6 +13,6 @@ ebean:
   ddl:
     run: true
     generate: true
-    seedSql: seed.sql
+    seedSql: seed-test-db.sql
     migration:
       run: true
