@@ -17,7 +17,6 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 
-import javax.persistence.PersistenceException;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -44,7 +43,6 @@ class AppTest {
     void testInit() {
         assertThat(true).isEqualTo(true);
     }
-
 
     @BeforeAll
     public static void beforeAll() throws IOException {
