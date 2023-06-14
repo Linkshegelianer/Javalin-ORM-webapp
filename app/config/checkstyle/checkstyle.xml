@@ -49,10 +49,6 @@
         <property name="fileNamePattern" value="module\-info\.java$"/>
     </module>
 
-    <module name="BeforeExecutionExclusionFileFilter">
-        <property name="fileNamePattern" value=".*[\\/]build[\\/]generated[\\/]sources[\\/].*$"/>
-    </module>
-
     <!-- https://checkstyle.org/config_filters.html#SuppressionFilter -->
     <module name="SuppressionFilter">
         <property name="file" value="${org.checkstyle.sun.suppressionfilter.config}"
@@ -167,13 +163,10 @@
         <!-- See https://checkstyle.org/config_coding.html -->
         <module name="EmptyStatement"/>
         <module name="EqualsHashCode"/>
-        <module name="HiddenField" >
-            <property name="ignoreSetter" value="true" />
-            <property name="ignoreConstructorParameter" value="true" />
-        </module>
+        <module name="HiddenField"/>
         <module name="IllegalInstantiation"/>
         <module name="InnerAssignment"/>
-        <!-- <module name="MagicNumber"/> -->
+        <module name="MagicNumber"/>
         <module name="MissingSwitchDefault"/>
         <module name="MultipleVariableDeclarations"/>
         <module name="SimplifyBooleanExpression"/>
@@ -181,17 +174,17 @@
 
         <!-- Checks for class design                         -->
         <!-- See https://checkstyle.org/config_design.html -->
-        <!-- <module name="DesignForExtension"/> -->
+        <module name="DesignForExtension"/>
         <module name="FinalClass"/>
         <!-- <module name="HideUtilityClassConstructor"/> -->
         <module name="InterfaceIsType"/>
-        <!-- <module name="VisibilityModifier"/> -->
+        <module name="VisibilityModifier"/>
 
         <!-- Miscellaneous other checks.                   -->
         <!-- See https://checkstyle.org/config_misc.html -->
         <module name="ArrayTypeStyle"/>
         <!-- <module name="FinalParameters"/> -->
-        <!-- <module name="TodoComment"/> -->
+        <module name="TodoComment"/>
         <module name="UpperEll"/>
 
         <module name="Indentation">
@@ -205,8 +198,6 @@
             <property name="optional" value="true"/>
         </module>
 
-        <module name="SuppressionCommentFilter">
-            <property name="checkFormat" value="MethodLength"/>
-        </module>
     </module>
+
 </module>
