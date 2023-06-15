@@ -26,8 +26,8 @@ application {
 }
 
 dependencies {
-    implementation 'io.javalin:javalin:5.0.0'
-    implementation 'io.javalin:javalin-rendering:5.0.0'
+    implementation 'io.javalin:javalin:5.5.0'
+    implementation 'io.javalin:javalin-rendering:5.5.0'
     implementation 'org.slf4j:slf4j-simple:2.0.6'
 
     implementation 'com.h2database:h2:2.1.214'
