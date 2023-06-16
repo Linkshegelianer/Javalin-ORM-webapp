@@ -41,7 +41,7 @@ public final class Url extends Model {
 
     public Instant getCreatedAt() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
-        LocalDateTime dateTime = LocalDateTime.ofInstant(createdAt, ZoneId.systemDefault());
+        LocalDateTime dateTime = LocalDateTime.ofInstant(this.createdAt, ZoneId.systemDefault());
         return createdAt;
     }
 
