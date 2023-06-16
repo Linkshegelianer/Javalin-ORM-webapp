@@ -1,19 +1,11 @@
 <!DOCTYPE html>
-<html lang="ru" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layouts/application.html}">
-
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Анализатор страниц</title>
-    <link rel='stylesheet' href='/webjars/bootstrap/5.1.3/css/bootstrap.min.css'>
-    <script src="/webjars/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
-</head>
 
 <section layout:fragment="content">
     <div class="card">
         <div class="card-body p-5 bg-light">
-                <div class="display-4">Анализатор страниц</div>
+            <h1 class="display-3 mb-0">Анализатор страниц</h1>
                 <p class="lead">Бесплатно проверяйте сайты на SEO пригодность</p>
                 <form class="rss-form text-body" action="/urls" method="post">
                     <div class="row">
