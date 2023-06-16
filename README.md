@@ -5,7 +5,7 @@ This is an educational project aimed at the practice of working with Javalin, OR
 
 The application checks whether the website is accessible (response code is 200) and has title, description and h1 tag. 
 
-**See how it works [here]().**
+**See how it works [here](https://seo-page-analyzer-ivdw.onrender.com/).**
 
 ### Hexlet tests and linter status:
 | Type | Status                                                                                                                                                                           |  
