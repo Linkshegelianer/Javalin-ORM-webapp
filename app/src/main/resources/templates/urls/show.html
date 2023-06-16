@@ -44,9 +44,9 @@
                     <td th:text="*{getId()}"></td>
                     <td th:text="*{getStatusCode()}"></td>
                     <td th:text="*{getTitle()}"></td>
-                    <td th:text="${getH1() != null} ? *{getH1()} : ''"></td>
-                    <td th:text="${getDescription() != null} ? *{getDescription()} : ''"></td>
-                    <td th:text="${#temporals.format(urlCheck.getCreatedAt(), 'dd/MM/yyyy HH:mm')}"></td>
+                    <td th:text="*{getH1() != null} ? *{getH1()} : ''"></td>
+                    <td th:text="*{getDescription() != null} ? *{getDescription()} : ''"></td>
+                    <td th:text="*{getCreatedAt() != null} ? *{getCreatedAt()} : ''"></td>
                 </tr>
             </tbody>
         </table>
