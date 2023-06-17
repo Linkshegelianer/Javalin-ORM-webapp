@@ -20,7 +20,7 @@
                 <td th:text="*{getId()}"></td>
                 <td><a th:text="*{getName()}" th:href="@{|/urls/*{getId()}|}"></a></td>
                 <td th:text="*{getCreatedAt() != null} ? *{#temporals.format(getCreatedAt(), 'dd/MM/yyyy HH:mm')} : ''"></td>
-                <td th:text="*{getUrlChecks().size != 0} ? *{getStatusCode()} : ''"></td>
+                <td th:text="*{getUrlChecks().size != 0} ? ${url.getUrlChecks().get(0).getStatusCode()} : ''"></td>
             </tr>
             </tbody>
         </table>
