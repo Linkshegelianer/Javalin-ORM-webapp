@@ -5,6 +5,7 @@ import hexlet.code.domain.UrlCheck;
 import hexlet.code.domain.query.QUrl;
 import io.ebean.PagedList;
 import io.javalin.http.Handler;
+import io.javalin.http.NotFoundResponse;
 import kong.unirest.HttpResponse;
 import kong.unirest.Unirest;
 import kong.unirest.UnirestException;
@@ -15,7 +16,6 @@ import org.jsoup.nodes.Element;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -43,10 +43,6 @@ public final class UrlController {
                 .boxed()
                 .collect(Collectors.toList());
 
-//        int totalRowsCount = pagedUrls.getTotalCount();
-//        int lastPageNumber = (int) Math.ceil((double) totalRowsCount / rowsPerPage);
-//        List<Integer> pageNumbers = IntStream.rangeClosed(1, lastPageNumber).boxed().toList();
-
         ctx.attribute("currentPage", currentPage);
         ctx.attribute("pages", pages);
         ctx.attribute("urls", urls);
@@ -58,19 +54,16 @@ public final class UrlController {
         long urlId = ctx.pathParamAsClass("id", Long.class).getOrDefault(null);
 
         Url url = new QUrl()
-            .id.equalTo(urlId)
-            .findOne();
+                .id.equalTo(urlId)
+                .urlChecks.fetch()
+                .orderBy()
+                .urlChecks.createdAt.desc()
+                .findOne();
 
         if (url == null) {
-            ctx.sessionAttribute("flash", "Страница не найдена");
-            ctx.sessionAttribute("flash-type", "danger");
-            ctx.redirect("/");
-            return;
+            throw new NotFoundResponse();
         }
 
-        if (url.getUrlChecks().size() > 1) {
-            url.getUrlChecks().sort(Comparator.comparing(UrlCheck::getCreatedAt).reversed());
-        }
         ctx.attribute("url", url);
         ctx.render("urls/show.html");
     };
@@ -80,13 +73,9 @@ public final class UrlController {
         String urlFull = ctx.formParam("url");
         String urlConstructed = null;
 
+        URL parsedUrl;
         try {
-            URL url = new URL(urlFull);
-            String protocol = url.getProtocol();
-            String host = url.getHost();
-            int portNumber = url.getPort(); // if URL doesn't specify a port number, return -1
-            String port = (portNumber == -1) ? "" : ":" + portNumber;
-            urlConstructed = protocol + "://" + host + port;
+            parsedUrl = new URL(urlFull);
         } catch (MalformedURLException e) {
             ctx.sessionAttribute("flash", "Некорректный URL");
             ctx.sessionAttribute("flash-type", "danger");
@@ -94,6 +83,12 @@ public final class UrlController {
             ctx.redirect("/");
             return;
         }
+
+        String protocol = parsedUrl.getProtocol();
+        String host = parsedUrl.getHost();
+        int portNumber = parsedUrl.getPort(); // if URL doesn't specify a port number, return -1
+        String port = (portNumber == -1) ? "" : ":" + portNumber;
+        urlConstructed = protocol + "://" + host + port;
 
         Url urlPresent = new QUrl()
                 .name.equalTo(urlConstructed)
@@ -111,12 +106,17 @@ public final class UrlController {
         ctx.redirect("/urls");
     };
 
+    // POST /urls/id add urlcheck
     public static Handler createUrlCheck = ctx -> {
         long urlId = ctx.pathParamAsClass("id", Long.class).getOrDefault(null);
 
         Url urlPresent = new QUrl()
                 .id.equalTo(urlId)
                 .findOne();
+
+        if (urlPresent == null) {
+            throw new NotFoundResponse();
+        }
 
         try {
             HttpResponse<String> response = Unirest.get(urlPresent.getName()).asString();
@@ -128,7 +128,9 @@ public final class UrlController {
             String description = getDescription(document);
 
             UrlCheck check = new UrlCheck(httpStatusCode, title, h1, description, urlPresent);
-            check.save();
+            urlPresent.getUrlChecks().add(check);
+            urlPresent.save();
+
             ctx.sessionAttribute("flash", "Страница успешно проверена");
             ctx.sessionAttribute("flash-type", "success");
         } catch (UnirestException e) {

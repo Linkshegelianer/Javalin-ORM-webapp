@@ -125,7 +125,7 @@ class AppTest {
         }
 
         @Test
-        void testCreateSameUrl() { // pass
+        void testCreateSameUrl() {
             HttpResponse<String> responsePost = Unirest
                     .post(baseUrl + "/urls")
                     .field("url", ADDED_URL_FIRST)
@@ -145,7 +145,7 @@ class AppTest {
         }
 
         @Test
-        void testShowUrl() { // pass
+        void testShowUrl() {
             HttpResponse<String> responseGet = Unirest
                     .get(baseUrl + "/urls/2")
                     .asString();
@@ -158,7 +158,7 @@ class AppTest {
         }
 
         @Test
-        void testShowAllUrls() { // pass
+        void testShowAllUrls() {
             HttpResponse<String> responseGet = Unirest
                     .get(baseUrl + "/urls")
                     .asString();
@@ -170,7 +170,7 @@ class AppTest {
         }
 
         @Test
-        void createUrlCheck() throws IOException { // pass
+        void createStoreUrlCheck() throws IOException {
             mockWebServer = new MockWebServer();
             mockWebServer.start();
 
@@ -187,48 +187,46 @@ class AppTest {
                     .setBody(mockHtml)
                     .setResponseCode(201);
             mockWebServer.enqueue(mockResponse);
-            // remove trailing slash
+
             String mockUrl = mockWebServer.url("/").toString().replaceAll("/$", "");
 
-            int newUrlId = ADDED_URLS_COUNT + 1;
-
-            HttpResponse<String> responsePost = Unirest
+            Unirest
                     .post(baseUrl + "/urls")
                     .field("url", mockUrl)
-                    .asString();
+                    .asEmpty();
 
-            HttpResponse<String> responsePostCheck = Unirest
-                    .post(baseUrl + "/urls/%d/checks".formatted(newUrlId)) // nextUrlId
-                    .asString();
-
-            assertThat(responsePostCheck.getStatus()).isEqualTo(302);
-            assertThat(responsePostCheck.getHeaders().getFirst("Location")).isEqualTo("/urls/%d".formatted(newUrlId));
-
-            HttpResponse<String> responseGet = Unirest
-                    .get(baseUrl + "/urls/%d".formatted(newUrlId))
-                    .asString();
-
-            assertThat(responseGet.getStatus()).isEqualTo(200);
-            assertThat(responseGet.getBody()).contains(String.valueOf(newUrlId));
-            assertThat(responseGet.getBody()).contains("201");
-            assertThat(responseGet.getBody()).contains("Test title");
-            assertThat(responseGet.getBody()).contains("Test description");
-            assertThat(responseGet.getBody()).contains("Test h1 header");
-
-            Url url = new QUrl()
+            Url actualUrl = new QUrl()
                     .name.equalTo(mockUrl)
                     .findOne();
 
-            UrlCheck urlCheck = new QUrlCheck()
-                    .url.equalTo(url)
+            assertThat(actualUrl).isNotNull();
+            assertThat(actualUrl.getName()).isEqualTo(mockUrl);
+
+            Unirest
+                    .post(baseUrl + "/urls/" + actualUrl.getId() + "/checks")
+                    .asEmpty();
+
+            HttpResponse<String> response = Unirest
+                    .get(baseUrl + "/urls/" + actualUrl.getId())
+                    .asString();
+
+            assertThat(response.getStatus()).isEqualTo(200);
+
+            UrlCheck actualCheckUrl = new QUrlCheck()
+                    .url.equalTo(actualUrl)
+                    .orderBy()
+                    .createdAt.desc()
                     .findOne();
 
-            assertThat(urlCheck).isNotNull();
-            assertThat(urlCheck.getUrl().getName()).isEqualTo(mockUrl);
+            assertThat(actualCheckUrl).isNotNull();
+            assertThat(actualCheckUrl.getStatusCode()).isEqualTo(201);
+            assertThat(actualCheckUrl.getTitle()).isEqualTo("Test title");
+            assertThat(actualCheckUrl.getH1()).isEqualTo("Test h1 header");
+            assertThat(actualCheckUrl.getDescription()).contains("Test description");
         }
 
         @Test
-        void testCheckInvalidUrl() { // pass
+        void testCheckInvalidUrl() {
             HttpResponse<String> responsePost = Unirest
                     .post(baseUrl + "/urls/%d/checks".formatted(INVALID_URL_ID))
                     .asString();

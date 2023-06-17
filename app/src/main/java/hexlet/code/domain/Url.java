@@ -3,11 +3,11 @@ package hexlet.code.domain;
 import io.ebean.Model;
 import io.ebean.annotation.WhenCreated;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import java.time.Instant;
-import java.util.Comparator;
 import java.util.List;
 
 @Entity
@@ -21,7 +21,7 @@ public final class Url extends Model {
     @WhenCreated
     private Instant createdAt;
 
-    @OneToMany(mappedBy = "url")
+    @OneToMany(cascade = CascadeType.ALL)
     private List<UrlCheck> urlChecks;
 
     public Url(String name) {
@@ -37,8 +37,6 @@ public final class Url extends Model {
     }
 
     public Instant getCreatedAt() {
-//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
-//        LocalDateTime dateTime = LocalDateTime.ofInstant(this.createdAt, ZoneId.systemDefault());
         return createdAt;
     }
 
@@ -46,9 +44,4 @@ public final class Url extends Model {
         return urlChecks;
     }
 
-    public UrlCheck getLastCheck() {
-        return this.urlChecks.stream()
-            .max(Comparator.comparing(UrlCheck::getCreatedAt))
-            .orElse(null);
-    }
 }
