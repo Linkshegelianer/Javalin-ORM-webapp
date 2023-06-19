@@ -36,7 +36,6 @@ class AppTest {
     private static final String ADDED_URL_SECOND = "https://stackoverflow.com";
     public static final String TEST_HTML_PATH = "src/test/resources/";
     private static final String MOCK_INDEX_HTML = "test.html";
-    public static final int ADDED_URLS_COUNT = 3;
     private static final int INVALID_URL_ID = 3;
 
     @Test
