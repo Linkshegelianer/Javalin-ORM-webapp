@@ -143,14 +143,20 @@ public final class UrlController {
     @Nullable
     private static String getH1(Document document) {
         Element h1 = document.selectFirst("h1");
-        String h1String = h1.text();
-        return h1String.isEmpty() ? null : h1String;
+        if (h1 != null) {
+            String h1String = h1.text();
+            return h1String.isEmpty() ? null : h1String;
+        }
+        return null;
     }
 
     @Nullable
     private static String getDescription(Document document) {
         Element description = document.selectFirst("meta[name='description']");
-        String descriptionString = description.attr("content");
-        return descriptionString.isEmpty() ? null : descriptionString;
+        if (description != null) {
+            String descriptionString = description.attr("content");
+            return descriptionString.isEmpty() ? null : descriptionString;
+        }
+        return null;
     }
 }
