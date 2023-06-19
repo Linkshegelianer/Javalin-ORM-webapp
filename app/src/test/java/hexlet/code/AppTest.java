@@ -36,7 +36,6 @@ class AppTest {
     private static final String ADDED_URL_SECOND = "https://stackoverflow.com";
     public static final String TEST_HTML_PATH = "src/test/resources/";
     private static final String MOCK_INDEX_HTML = "test.html";
-    private static final int INVALID_URL_ID = 3;
 
     @Test
     void testInit() {
@@ -145,8 +144,12 @@ class AppTest {
 
         @Test
         void testShowUrl() {
+            Url actualUrl = new QUrl()
+                    .name.equalTo(ADDED_URL_SECOND)
+                    .findOne();
+
             HttpResponse<String> responseGet = Unirest
-                    .get(baseUrl + "/urls/2")
+                    .get(baseUrl + "/urls/" + actualUrl.getId())
                     .asString();
 
             String body = responseGet.getBody();
@@ -226,22 +229,47 @@ class AppTest {
 
         @Test
         void testCheckInvalidUrl() {
+            String invalidUrl = "https://.com";
+
             HttpResponse<String> responsePost = Unirest
-                    .post(baseUrl + "/urls/%d/checks".formatted(INVALID_URL_ID))
+                    .post(baseUrl + "/urls")
+                    .field("url", invalidUrl)
+                    .asString();
+
+            assertThat(responsePost.getStatus()).isEqualTo(302);
+            assertThat(responsePost.getHeaders().getFirst("Location")).isEqualTo("/urls");
+
+            HttpResponse<String> responseGet = Unirest
+                    .get(baseUrl + "/urls")
+                    .asString();
+            String body = responseGet.getBody();
+
+            assertThat(responseGet.getStatus()).isEqualTo(200);
+            assertThat(body).contains(invalidUrl);
+
+            Url actualUrl = new QUrl()
+                    .name.equalTo(invalidUrl)
+                    .findOne();
+
+            assertThat(actualUrl).isNotNull();
+            assertThat(actualUrl.getName()).isEqualTo(invalidUrl); // pass
+
+            HttpResponse<String> responsePostCheck = Unirest
+                    .post(baseUrl + "/urls/%d/checks".formatted(actualUrl.getId()))
                     .asString();
 
             UrlCheck urlCheck = new QUrlCheck()
-                    .url.id.equalTo(INVALID_URL_ID)
+                    .url.id.equalTo(actualUrl.getId())
                     .findOne();
 
-            assertThat(responsePost.getStatus()).isEqualTo(302);
+            assertThat(responsePostCheck.getStatus()).isEqualTo(302);
 
-            HttpResponse<String> responseGet = Unirest
-                    .get(baseUrl + "/urls/%d".formatted(INVALID_URL_ID))
+            HttpResponse<String> responseGetCheck = Unirest
+                    .get(baseUrl + "/urls/%d".formatted(actualUrl.getId()))
                     .asString();
 
-            assertThat(responseGet.getStatus()).isEqualTo(200);
-            assertThat(responseGet.getBody()).contains("Некорректный адрес");
+            assertThat(responseGetCheck.getStatus()).isEqualTo(200);
+            assertThat(responseGetCheck.getBody()).contains("Некорректный адрес");
         }
     }
 }
