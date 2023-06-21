@@ -7,7 +7,7 @@ plugins {
     id 'jacoco'
 }
 
-group = 'hexlet.code'
+group = 'project.code'
 version = '1.0-SNAPSHOT'
 
 repositories {
@@ -19,7 +19,7 @@ compileJava {
 }
 
 application {
-    mainClass = 'hexlet.code.App'
+    mainClass = 'project.code.App'
 }
 
 dependencies {
@@ -81,7 +81,7 @@ checkstyle {
 
 task generateMigrations(type: JavaExec) {
     classpath = sourceSets.main.runtimeClasspath
-    mainClass = 'hexlet.code.MigrationGenerator'
+    mainClass = 'project.code.MigrationGenerator'
 }
 
 task stage(dependsOn: ['clean', 'installDist'])
