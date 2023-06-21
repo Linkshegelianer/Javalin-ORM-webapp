@@ -67,8 +67,8 @@ class AppTest {
     void testRootIndex() {
         HttpResponse<String> responseGet = Unirest.get(baseUrl).asString();
         assertThat(responseGet.getStatus()).isEqualTo(200);
-        assertThat(responseGet.getBody()).contains("Анализатор страниц");
-        assertThat(responseGet.getBody()).contains("Бесплатно проверяйте сайты на SEO пригодность");
+        assertThat(responseGet.getBody()).contains("Page Analyzer");
+        assertThat(responseGet.getBody()).contains("Check websites for SEO suitability for free");
     }
 
     @Nested
@@ -92,8 +92,8 @@ class AppTest {
 
             assertThat(responseGet.getStatus()).isEqualTo(200);
             assertThat(body).contains(inputValid);
-            assertThat(body).contains("Сайты");
-            assertThat(body).contains("Страница успешно добавлена");
+            assertThat(body).contains("Websites");
+            assertThat(body).contains("Page added successfully");
 
             Url actualUrl = new QUrl()
                     .name.equalTo(inputValid)
@@ -119,7 +119,7 @@ class AppTest {
                     .asString();
             String body = responseGet.getBody();
 
-            assertThat(body).contains("Некорректный URL");
+            assertThat(body).contains("Invalid URL");
         }
 
         @Test
@@ -139,7 +139,7 @@ class AppTest {
 
             assertThat(responseGet.getStatus()).isEqualTo(200);
             assertThat(body).contains(ADDED_URL_FIRST);
-            assertThat(body).contains("Страница уже существует");
+            assertThat(body).contains("Page already exists");
         }
 
         @Test
@@ -156,7 +156,7 @@ class AppTest {
 
             assertThat(responseGet.getStatus()).isEqualTo(200);
             assertThat(body).contains(ADDED_URL_SECOND);
-            assertThat(body).contains("Запустить проверку");
+            assertThat(body).contains("Start check");
         }
 
         @Test
@@ -269,7 +269,7 @@ class AppTest {
                     .asString();
 
             assertThat(responseGetCheck.getStatus()).isEqualTo(200);
-            assertThat(responseGetCheck.getBody()).contains("Некорректный адрес");
+            assertThat(responseGetCheck.getBody()).contains("Invalid address");
         }
     }
 }
