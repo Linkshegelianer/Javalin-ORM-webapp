@@ -3,7 +3,12 @@
 
 This repository contains a small web-application for checking other websites' search engine optimization. The application checks whether the website is accessible (response code is 200) and has title, description and h1 tag.
 
-**See how it works [here](https://seo-page-analyzer-ivdw.onrender.com/).**
+
+**See how it works here:**
+<p style="text-align: center;"><img src="https://github.com/Linkshegelianer/Javalin-ORM-webapp/blob/main/app/src/main/resources/screenshots/1.png"></p>
+<p style="text-align: center;"><img src="https://github.com/Linkshegelianer/Javalin-ORM-webapp/blob/main/app/src/main/resources/screenshots/2.png"></p>
+<p style="text-align: center;"><img src="https://github.com/Linkshegelianer/Javalin-ORM-webapp/blob/main/app/src/main/resources/screenshots/3.png"></p>
+
 
 ##  Technologies 
 #### Backend Technologies:
